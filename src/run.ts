@@ -1,0 +1,1 @@
+// All logics to start the app goes here
