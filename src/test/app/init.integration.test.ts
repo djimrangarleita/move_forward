@@ -1,29 +1,29 @@
 import request from 'supertest';
-import { startApp } from '../../run';
 import { Express } from 'express-serve-static-core';
 import mongoose from 'mongoose';
+import { startApp } from '../../run';
 
 describe('Test app module', () => {
-    let app: Express;
-    let db: typeof mongoose;
-    
-    beforeAll(async () => {
-        try {
-            const apps = await startApp();
-            app = apps.app;
-            db = apps.db;
-        } catch (error) {
-            console.log('Exiting app...');
-            process.exit(1);
-        }
-    });
+  let app: Express;
+  let db: typeof mongoose;
 
-    afterAll(async () => {
-        await db.connection.close();
-    })
+  beforeAll(async () => {
+    try {
+      const apps = await startApp();
+      app = apps.app;
+      db = apps.db;
+    } catch (error) {
+      console.log('Exiting app...');
+      process.exit(1);
+    }
+  });
 
-    test('It should return 200 status when call /', async () => {
-        const response = await request(app).get('/');
-        expect(response.status).toBe(200);
-    });
+  afterAll(async () => {
+    await db.connection.close();
+  });
+
+  test('It should return 200 status when call /', async () => {
+    const response = await request(app).get('/');
+    expect(response.status).toBe(200);
+  });
 });
