@@ -1,13 +1,26 @@
 import request from 'supertest';
 import { startApp } from '../../run';
 import { Express } from 'express-serve-static-core';
+import mongoose from 'mongoose';
 
 describe('Test app module', () => {
     let app: Express;
+    let db: typeof mongoose;
     
-    beforeAll(() => {
-        app = startApp();
+    beforeAll(async () => {
+        try {
+            const apps = await startApp();
+            app = apps.app;
+            db = apps.db;
+        } catch (error) {
+            console.log('Exiting app...');
+            process.exit(1);
+        }
     });
+
+    afterAll(async () => {
+        await db.connection.close();
+    })
 
     test('It should return 200 status when call /', async () => {
         const response = await request(app).get('/');
