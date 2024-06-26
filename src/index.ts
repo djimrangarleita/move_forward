@@ -1,8 +1,17 @@
-import { Express } from 'express-serve-static-core';
 import { startApp } from './run';
+import { config } from './config';
 
-const app: Express = startApp();
+async function main() {
+  try {
+    const { app } = await startApp();
 
-app.listen(3000, () => {
-    console.log('Server listening on port 3000...');
-});
+    app.listen(config.APP_PORT, () => {
+      console.log(`Server listening on port ${config.APP_PORT}...`);
+    });
+  } catch (error) {
+    console.log('Exiting app...');
+    process.exit(1);
+  }
+}
+
+main();
