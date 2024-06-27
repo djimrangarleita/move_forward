@@ -42,10 +42,11 @@ export default [{
         "prettier/prettier": "warn",
 
         "import/no-extraneous-dependencies": ["error", {
-            devDependencies: ["**/tests/**", "**/test/**"],
+            devDependencies: ["**/tests/**", "**/test/**", "**/__tests__/**", "**/__test__/**", "**/*.test.js", "**/*.spec.js",],
         }],
 
         "no-console": "off",
+        "no-underscore-dangle": "off",
 
         "import/no-unresolved": "off",
         "import/extensions": "off",
