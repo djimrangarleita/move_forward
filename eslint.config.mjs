@@ -42,10 +42,13 @@ export default [{
         "prettier/prettier": "warn",
 
         "import/no-extraneous-dependencies": ["error", {
-            devDependencies: ["**/tests/**", "**/test/**"],
+            devDependencies: ["**/tests/**", "**/test/**", "**/__tests__/**", "**/__test__/**", "**/*.test.js", "**/*.spec.js",],
         }],
 
         "no-console": "off",
+        "no-underscore-dangle": "off",
+
+        "@typescript-eslint/no-explicit-any": "off",
 
         "import/no-unresolved": "off",
         "import/extensions": "off",
@@ -54,5 +57,10 @@ export default [{
         "no-param-reassign": "off",
         "no-use-before-define": "off",
         "import/prefer-default-export": "off",
+
+        "max-classes-per-file": [
+            "error",
+            { "ignoreExpressions": true, "max": 2 }
+        ]
     },
 }];

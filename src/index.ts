@@ -9,6 +9,7 @@ async function main() {
       console.log(`Server listening on port ${config.APP_PORT}...`);
     });
   } catch (error) {
+    console.log(error);
     console.log('Exiting app...');
     process.exit(1);
   }
