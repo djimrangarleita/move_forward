@@ -1,5 +1,6 @@
 import mongoose, { Document, ObjectId } from 'mongoose';
 import { CreateUserDto, IUserRepository, UserDto } from '../../types';
+import { UserNotFoundError } from '../../../../libraries/error-handling/app.error';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -57,6 +58,10 @@ const UserSchema = new mongoose.Schema({
       type: String,
       select: false,
     },
+    role: {
+      type: String,
+      default: 'user',
+    },
   },
   createdAt: {
     type: Date,
@@ -95,21 +100,52 @@ class MongooseUserRepository implements IUserRepository {
     return MongooseUserRepository.toDto(user);
   }
 
-  async findOneByEmail(email: string): Promise<UserDto | null> {
-    const user = (await this.userModel.findOne({ email })) as UserDto &
-      Document;
+  async findOneByEmail(
+    email: string,
+    isAuth: boolean = false
+  ): Promise<UserDto | null> {
+    let dbUser;
+    if (isAuth) {
+      dbUser = await this.userModel
+        .findOne({ email })
+        .select('+authentication.password +authentication.salt');
+    } else {
+      dbUser = await this.userModel.findOne({ email });
+    }
+    if (!dbUser) {
+      throw new UserNotFoundError();
+    }
+    const user = dbUser as UserDto & Document;
     return MongooseUserRepository.toDto(user);
   }
 
-  async findOneBySessionToken(sessionToken: string): Promise<UserDto | null> {
-    const user = (await this.userModel.findOne({
-      'authentication.sessionsToken': sessionToken,
-    })) as UserDto & Document;
+  /**
+   *
+   * @param sessionToken
+   * @returns {UserDto}
+   * @throws {UserNotFoundException}
+   */
+  async findOneBySessionToken(sessionToken: string): Promise<UserDto> {
+    const dbUser = await this.userModel.findOne({
+      'authentication.sessionToken': sessionToken,
+    });
+    if (!dbUser) {
+      throw new UserNotFoundError();
+    }
+    const user = dbUser as UserDto & Document;
     return MongooseUserRepository.toDto(user);
+  }
+
+  async update(user: CreateUserDto & { id: string }): Promise<UserDto | null> {
+    const savedUser = await this.userModel.findByIdAndUpdate(user.id, user);
+    if (!savedUser) {
+      throw new UserNotFoundError();
+    }
+    const dbUser = savedUser as UserDto & Document;
+    return MongooseUserRepository.toDto(dbUser);
   }
 
   async register(user: CreateUserDto): Promise<UserDto> {
-    // const newUser = new UserModel({ ...user });
     const savedUser = (await this.userModel.create({ ...user })) as UserDto &
       Document;
     return MongooseUserRepository.toDto(savedUser);

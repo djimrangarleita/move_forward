@@ -1,22 +1,45 @@
 import { Request, Response } from 'express';
 import { userService } from '../domain';
-import { CreateUserDto } from '../types';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await userService.findAll();
     return res.status(200).send(users);
   } catch (error) {
-    return res.status(400).send({ msg: 'Unexpected error' });
+    return res.status(400).send({ status: 400, error: 'Unexpected error' });
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
   try {
-    const rawUser = req.body as CreateUserDto;
-    const user = await userService.register(rawUser);
-    return res.status(201).send(user);
+    const user = await userService.findUserBySessionToken(
+      req.cookies?.X_SESSION_TOKEN
+    );
+    return res.status(200).send(user);
   } catch (error) {
-    return res.status(400).send({ msg: 'Unexpected error' });
+    console.log(error);
+    return res.status(400).send({ status: 400, error: 'Unexpected error' });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    // const user = await userService.update(
+    //   req.cookies?.X_SESSION_TOKEN,
+    //   req.body
+    // );
+    return res.status(501).send({ status: 501, error: 'Available soon' });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, error: 'Unexpected error' });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    return res.status(501).send({ status: 501, error: 'Available soon' });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, error: 'Unexpected error' });
   }
 };

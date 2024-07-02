@@ -48,6 +48,8 @@ export default [{
         "no-console": "off",
         "no-underscore-dangle": "off",
 
+        "@typescript-eslint/no-explicit-any": "off",
+
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "no-return-await": "off",
@@ -55,5 +57,10 @@ export default [{
         "no-param-reassign": "off",
         "no-use-before-define": "off",
         "import/prefer-default-export": "off",
+
+        "max-classes-per-file": [
+            "error",
+            { "ignoreExpressions": true, "max": 2 }
+        ]
     },
 }];
