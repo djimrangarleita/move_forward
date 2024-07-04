@@ -7,6 +7,7 @@ import { userRouter } from './apps/user/api/user.route';
 import { isGranted } from './libraries/middleware/authentication';
 import { UserRole } from './apps/user/user.enum';
 import { securityRouter } from './apps/user/api/security.route';
+import myJobRoute from './apps/my-job/api/my-job.route';
 
 type App = {
   app: Express;
@@ -23,17 +24,23 @@ export const startApp = async (): Promise<App> => {
 
     app.use(cookieParser());
 
-    // register middlwares
-    app.get('/', (req: Request, res: Response) => {
-      res.send({ msg: 'Hello World, from Move Forward' });
-    });
-
-    app.use('/api/users', isGranted(UserRole.USER), userRouter);
+    app.use('/api/status', (req: Request, res: Response) =>
+      res
+        .status(200)
+        .send({ status: 200, msg: 'Move Forward is up and running' })
+    );
 
     app.use('/api/auth', securityRouter);
 
+    app.use('/api/users', isGranted(UserRole.USER), userRouter);
+
+    app.use('/api/my-job', isGranted(UserRole.USER), myJobRoute);
+
+    app.use((req: Request, res: Response) => {
+      res.status(404).json({ status: 404, error: 'Not found' });
+    });
+
     return { app, db };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(`An error occured while initilizing the app: ${error.message}`);
     throw error;

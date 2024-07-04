@@ -40,8 +40,7 @@ export const update = async (
   const dbUser = await userRepository.findOneBySessionToken(sessionToken);
   const resUser = { ...dbUser, ...user } as CreateUserDto & { id: string };
   console.log(resUser);
-  return null;
-  // return await userRepository.update(resUser);
+  return await userRepository.update(resUser);
 };
 
 export const login = async (credentials: LoginDto): Promise<string> => {
