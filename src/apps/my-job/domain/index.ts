@@ -1,3 +1,3 @@
-import * as myJobService from './my_job.service';
+import * as myJobService from './my-job.service';
 
 export { myJobService };

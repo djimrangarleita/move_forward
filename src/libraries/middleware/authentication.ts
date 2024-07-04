@@ -13,7 +13,7 @@ export const getUser = async (token: string) => {
       id: dbUser.id,
       email: dbUser.email,
       role: dbUser.authentication.role,
-      sessionToken: dbUser.authentication.sessionToken!,
+      sessionToken: token,
     };
 
     user = authUser;
@@ -55,6 +55,8 @@ export const isGranted =
     if (user.role !== role && user.role !== UserRole.ADMIN) {
       return res.status(403).send({ status: 403, error: 'Forbidden' });
     }
+
+    req.user = user;
 
     return next();
   };

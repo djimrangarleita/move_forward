@@ -4,6 +4,7 @@
   "description": "How many times did you receive those emails saying \"...will not move forward\" from recruiters? Being in the job seeker myself, I faced many challenges during job search. Let's list a few of them:",
   "main": "index.js",
   "scripts": {
+    "build": "tsc --build",
     "start": "tsc --build && node ./dist/main.js",
     "dev": "nodemon ./src/main.ts",
     "test": "jest",
