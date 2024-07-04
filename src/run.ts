@@ -24,9 +24,11 @@ export const startApp = async (): Promise<App> => {
 
     app.use(cookieParser());
 
-    app.get('/api/status', (req: Request, res: Response) => {
-      res.send({ status: 200, msg: 'Move Forward is up and running' });
-    });
+    app.use('/api/status', (req: Request, res: Response) =>
+      res
+        .status(200)
+        .send({ status: 200, msg: 'Move Forward is up and running' })
+    );
 
     app.use('/api/auth', securityRouter);
 

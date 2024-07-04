@@ -39,6 +39,9 @@ jobs:
           done
           echo "MongoDB did not start in time" && exit 1
 
+      - name: Check Linting
+        run: npm run build --if-present
+
       - name: Build
         run: npm run build --if-present
 

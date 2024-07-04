@@ -3,7 +3,7 @@ import { Express } from 'express-serve-static-core';
 import mongoose from 'mongoose';
 import { startApp } from '../../run';
 
-describe('Test app module', () => {
+describe('Test server status', () => {
   let app: Express;
   let db: typeof mongoose;
 
@@ -22,8 +22,8 @@ describe('Test app module', () => {
     await db.connection.close();
   });
 
-  test('It should return 200 status when call /', async () => {
-    const response = await request(app).get('/');
+  test('It should return 200 status when call /api/status', async () => {
+    const response = await request(app).get('/api/status');
     expect(response.status).toBe(200);
   });
 });
