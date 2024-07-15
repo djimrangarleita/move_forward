@@ -25,6 +25,8 @@ export const login = async (req: Request, res: Response) => {
     res.cookie('X_SESSION_TOKEN', sessionToken, {
       domain: config.APP_DOMAIN,
       path: '/',
+      sameSite: 'none',
+      secure: true,
     });
     return res.status(200).send({ msg: 'Cookie authentication successful' });
   } catch (error) {

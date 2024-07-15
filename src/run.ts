@@ -2,6 +2,7 @@ import express from 'express';
 import { Express, Request, Response } from 'express-serve-static-core';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { config } from './config';
 import { userRouter } from './apps/user/api/user.route';
 import { isGranted } from './libraries/middleware/authentication';
@@ -19,6 +20,13 @@ export const startApp = async (): Promise<App> => {
   try {
     // TODO: can be abstracted
     const db = await mongoose.connect(config.DB_URL);
+
+    const corsOptions = {
+      origin: config.APP_CLIENT_ORIGIN,
+      credentials: true,
+    };
+
+    app.use(cors(corsOptions));
 
     app.use(express.json());
 
