@@ -2,7 +2,7 @@
 
 ![Landing page](./landing-page.png)
 
-How many times did you receive those emails saying "...will not move forward" from recruiters? Being in the job seeker myself, I faced many challenges during job search. Let's list a few of them:
+How many times did you receive those emails saying "...will not move forward" from recruiters? Being a job seeker myself, I face many challenges during job search. Let's list a few of them:
 
 - lack of preparation;
 - absence of a clear career objective and plan;
